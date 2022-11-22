@@ -1,0 +1,63 @@
+﻿@model IEnumerable<LatinMedia.DataLayer.Entities.Course.UserCourse>
+@{
+    ViewData["Title"] = "UserCourses";
+}
+
+<div class="content">
+    <div class="container-fluid">
+   
+
+            <div class="row">
+
+                <div class="col-md-10">
+                    <div class="card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title">لیست فاکتورهای شما</h4>
+                            <p class="card-category"></p>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="row ">
+
+                                <table class="table table-bordered table-hover table-striped col-md-11  ">
+                                    <tr class="table-info">
+                                        <th>ردیف</th>
+                                        <th>عنوان دوره</th>
+
+                                        <th>دانلود فایل</th>
+                                      
+                                    </tr>
+                                    @{
+                                        int RowCount = 1;
+                                    }
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@RowCount</td>
+                                            <td><a href="/ShowCourse/@item.CourseId">
+                                                     @(item.Course.CourseFaTitle + " - " + item.Course.CourseLatinTitle)
+                                                </a>
+                                                </td>
+
+                                            <td>
+                                                <a href="/DownloadFile/@item.CourseId">دانلود </a>
+                                            </td>
+                                           
+                                        </tr>
+                                        RowCount++;
+                                    }
+
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+       
+    </div>
+</div>
+
+

@@ -1,0 +1,136 @@
+﻿@page
+@using LatinMedia.Core.Convertors
+@model LatinMedia.Web.Pages.Admin.Courses.IndexModel
+@{
+    ViewData["Title"] = "لیست دوره های اموزشی";
+}
+
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>
+                لیست دوره های اموزشی
+
+            </h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li>
+                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+
+
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                @if (Model.CourseList.Count == 0)
+                {
+                    <div class="alert alert-danger ">
+                        رکوردی یافت نشد
+                    </div>
+                }
+                @if (TempData["UpdateCourse"] != null)
+                {
+                  
+                    <div class="alert alert-info alert-dismissible fade in" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        اطلاعات دوره با موفقیت به روز رسانی شد
+                    </div>
+
+                }
+                @if (TempData["InsertCourse"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade in" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        دوره با موفقیت ثبت گردید
+                    </div>
+
+                }
+
+                <div id="datatable-checkbox_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <a href="/Admin/Courses/CreateCourse/" class="btn btn-success">افزودن دوره جدید</a>
+
+
+
+                            @{
+                                int rowCount = 1;
+                            }
+                            <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action dataTable no-footer" role="grid" aria-describedby="datatable-checkbox_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th>ردیف</th>
+                                        <th>تصویر آموزش</th>
+                                        <th>عنوان آموزش</th>
+                                        <th>شرکت تولید کننده</th>
+                                        <th>زمان اموزش</th>
+                                        <th>نوع آموزش</th>
+                                        <th>مبلغ آموزش</th>
+                                        <th>تاریخ انتشار</th>
+                                        <th>محصول ویژه ؟</th>
+                                        <th>گروه بندی</th>
+                                        <th>عملیات</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    @foreach (var item in Model.CourseList)
+                                    {
+
+                                        <tr role="row" class="odd">
+                                            <td>@rowCount</td>
+                                            <td><img src="/course/thumbnail/@item.CourseImageName" /></td>
+                                            <td>
+                                                @item.CourseFaTitle -
+                                                <br />
+                                                @item.CourseLatinTitle
+                                            </td>
+                                            <td>@item.Company</td>
+                                            <td>@item.CourseTime دقیقه</td>
+                                            <td>@item.CourseType</td>
+                                            <td>@item.CoursePrice.ToString("#,0 تومان")</td>
+                                            <td>@item.CreateDate.ToShamsi()</td>
+                                            <td>
+                                                @if (item.IsSpecial)
+                                                {
+                                                    <span class="text-success">محصول ویژه</span>
+                                                }
+
+                                            </td>
+                                            <td>
+                                                @(item.GroupId + " / ")
+                                                <br />
+                                                @(item.SubGroupId + " / ")
+                                                <br />
+                                                @(item.SecondSubGroupId)
+                                            </td>
+                                            <td>
+                                                <a href="/Admin/Courses/EditCourse/@item.CourseId" class="btn btn-info btn-xs"> <i class="fa fa-pencil"></i>ویرایش</a>
+                                                <a href="/Admin/Courses/DeleteCourse/@item.CourseId" class="btn btn-danger btn-xs"> <i class="fa fa-trash-o"></i>حذف</a>
+                                            </td>
+                                        </tr>
+                                        rowCount++;
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,153 @@
+﻿@model IEnumerable<LatinMedia.DataLayer.Entities.Course.CourseGroup>
+
+
+<div class="main-menu-wrap">
+    <div class="menu-bar">
+        <nav>
+            <ul class="main-menu">
+                <li class="menu-item sub">
+                    <a href="#">
+                        دسته بندی ها
+
+                    </a>
+
+                    <ul class="dropdown hover-effect closed">
+                        @foreach (var item in Model.Where(g => g.ParentId == null))
+                        {
+                            <li class="dropdown-item">
+                                <a href="/Course?selectedGroups=@item.GroupId">
+                                    @item.GroupTitle
+
+                                    <svg class="svg-arrow">
+                                        <use xlink:href="#svg-arrow"></use>
+                                    </svg>
+
+                                </a>
+                                @if (Model.Any(g => g.ParentId == item.GroupId))
+                                {
+                                    <ul class="dropdown closed">
+                                        @foreach (var sub in Model.Where(g => g.ParentId == item.GroupId))
+
+                                        {
+                                            <svg class="svg-arrow">
+                                                <use xlink:href="#svg-arrow"></use>
+                                            </svg>
+                                            <li class="dropdown-item">
+                                                <a href="/Course?selectedGroups=@sub.GroupId">@sub.GroupTitle</a>
+
+
+                                                @if (Model.Any(g => g.ParentId == sub.GroupId))
+                                                {
+                                                    <ul class="dropdown closed">
+                                                        @foreach (var sub2 in Model.Where(g => g.ParentId == sub.GroupId))
+                                                        {
+                                                            <li class="dropdown-item">
+                                                                <a href="/Course?selectedGroups=@sub2.GroupId">@sub2.GroupTitle</a>
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                                }
+                                            </li>
+
+                                        }
+                                    </ul>
+                                }
+
+
+                            </li>
+                        }
+
+                    </ul>
+
+                </li>
+
+                <li class="menu-item">
+                    <a href="/">صفحه اصلی</a>
+                </li>
+
+                <li class="menu-item">
+                    <a href="/Companies">شرکت ها</a>
+                </li>
+
+                <li class="menu-item">
+                    <a href="/Teachers">مدرسان</a>
+                </li>
+
+                <li class="menu-item">
+                    <a href="services.html">خدمات</a>
+                </li>
+
+                <li class="menu-item">
+                    <a href="shop-gridview-v1.html">محصولات انلاین</a>
+                </li>
+
+            </ul>
+        </nav>
+        <form action="/Course" method="get" class="search-form">
+            <input type="text" class="rounded" name="filter" id="search_products" placeholder="جستجوی محصولات">
+            <input type="image" src="/images/search-icon.png" alt="search-icon">
+        </form>
+    </div>
+</div>
+
+
+
+@*<ul class="main-menu">
+    <li class="menu-item sub">
+        <a href="#">
+            دسته بندی ها
+
+        </a>
+         DROPDOWN
+        <ul class="dropdown hover-effect closed">
+            <li class="dropdown-item">
+                <a href="#">
+                    طراحی وب سایت
+
+                    <svg class="svg-arrow">
+                        <use xlink:href="#svg-arrow"></use>
+                    </svg>
+
+                </a>
+
+                <ul class="dropdown closed">
+                    <li class="dropdown-item">
+                        <a href="#">Asp.Net Core</a>
+                    </li>
+                    <li class="dropdown-item">
+                        <a href="#">Asp.Net MVC</a>
+                    </li>
+                    <li class="dropdown-item">
+                        <a href="#">Asp.net Web Forms</a>
+                    </li>
+
+                </ul>
+
+            </li>
+
+
+        </ul>
+
+    </li>
+
+    <li class="menu-item">
+        <a href="/">صفحه اصلی</a>
+    </li>
+
+    <li class="menu-item">
+        <a href="how-to-shop.html">فروشگاه</a>
+    </li>
+
+    <li class="menu-item">
+        <a href="products.html">محصولات</a>
+    </li>
+
+    <li class="menu-item">
+        <a href="services.html">خدمات</a>
+    </li>
+
+    <li class="menu-item">
+        <a href="shop-gridview-v1.html">محصولات انلاین</a>
+    </li>*@
+
+        @*</ul>*@

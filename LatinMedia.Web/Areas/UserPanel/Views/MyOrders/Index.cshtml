@@ -1,0 +1,74 @@
+﻿@model IEnumerable<LatinMedia.DataLayer.Entities.Order.Order>
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="content">
+    <div class="container-fluid">
+        <form asp-action="Index" method="post">
+
+            <div class="row">
+
+                <div class="col-md-10">
+                    <div class="card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title">لیست فاکتورهای شما</h4>
+                            <p class="card-category"></p>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="row ">
+                          
+                                <table class="table table-bordered table-hover table-striped col-md-11  ">
+                                    <tr class="table-info">
+                                        <th>ردیف</th>
+                                        <th>شماره فاکتور</th>
+                                       
+                                        <th>وصعیت پرداخت</th>
+                                        <th>جمع کل</th>
+                                        <th>عملیات</th>
+                                    </tr>
+                                    @{
+                                        int RowCount = 1;
+                                    }
+                                    @foreach (var item in Model)
+                                    {
+                                    <tr>
+                                        <td>@RowCount</td>
+                                        <td>@item.OrderId</td>
+
+                                        <td>
+                                            @if (item.IsFinaly)
+                                            {
+                                                <p class="text-success">پرداخت شده</p>
+                                            }
+                                            else
+                                            {
+                                                <p class="text-danger">عدم پرداخت</p>
+                                            }
+                                        </td>
+                                        <td>
+                                            @item.OrderSum.ToString("#,0")
+                                        </td>
+                                        <td>
+                                            <a href="/UserPanel/MyOrders/ShowOrder/@item.OrderId" class="btn btn-info btn-sm">جزئیات فاکتور</a>
+                                            <a href="/UserPanel/MyOrders/" class="btn btn-danger btn-sm">حذف فاکتور</a>
+                                        </td>
+                                    </tr>
+                                        RowCount++;
+                                    }
+
+                                
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </form>
+    </div>
+</div>
+

@@ -1,0 +1,174 @@
+﻿@using LatinMedia.Core.Security
+@using LatinMedia.Core.Services.Interfaces
+@model LatinMedia.DataLayer.Entities.Order.Order
+@inject IUserService UserService
+@{
+    ViewData["Title"] = "ShowOrder";
+    int sumOrder = Model.OrderSum;
+}
+
+<div class="content">
+    <div class="container-fluid">
+  
+
+            <div class="row">
+
+                <div class="col-md-10">
+                    <div class="card">
+                        <div class="card-header card-header-info">
+                            <h4 class="card-title">جزئیات فاکتور شما</h4>
+                            <p class="card-category"></p>
+                        </div>
+                        <div class="card-body">
+
+
+
+                            <div class="row ">
+                                @if (ViewBag.Finaly == true)
+                                {
+                                    <div class="alert alert-success text-center">
+                                        پرداخت با موفقیت انجام شد
+                                    </div>
+                                }
+                                <table class="table table-bordered table-hover table-striped col-md-11  ">
+                                    <tr class="table-info">
+                                        <th>ردیف</th>
+                                        <th>عنوان دوره آموزشی</th>
+                                        <th>مبلغ</th>
+                                        <th>تعداد</th>
+                                        <th>جمع کل</th>
+                                    </tr>
+                                    @{
+                                        int RowCount = 1;
+                                    }
+                                    @foreach (var item in Model.OrderDetails)
+                                    {
+                                        <tr>
+                                            <td>@RowCount</td>
+                                            <td><a href="/ShowCourse/@item.CourseId" target="_blank">@item.Course.CourseFaTitle</a></td>
+                                            <td>
+                                                @item.CoursePrice.ToString("#,0")
+                                            </td>
+                                            <td>@item.OrderCount</td>
+                                            <td>@((item.CoursePrice * item.OrderCount).ToString("#,0"))</td>
+                                        </tr>
+                                        RowCount++;
+                                    }
+                               
+                                    <tr>
+
+                                        <td colspan="4" class="text-left">جمع کل : </td>
+                                        <td>
+                                          @sumOrder.ToString("#,0 تومان")
+                                        </td>
+
+                                    </tr>
+
+                                    @if (!Model.IsFinaly)
+                                    {
+                                        <tr>
+                                            <td colspan="4" class="text-left"></td>
+                                            <td colspan="2">
+                                                <a class="btn-link" id="linkDiscount" onclick="ShowDiscount()" href="#">اگر کد تخفیفی دارید کلیک کنید</a>
+                                                <div id="discount" hidden="">
+                                                    <form method="post" asp-action="UseDiscount">
+                                                        <input type="hidden" value="@Model.OrderId" name="orderId"/>
+                                                        <input type="text" name="code" class="form-control" placeholder="کد تخفیف"/>
+                                                        <input type="submit" class="btn btn-success" style="margin-top: 7px" value="اعمال تخفیف"/>
+                                                    </form>
+
+                                                    
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        @if (!Model.IsFinaly)
+                                        {
+                                            if (UserService.BalanceWalletUser(User.Identity.GetEmail()) >= sumOrder)
+                                            {
+                                                <td colspan="6">
+                                                    <a class="btn btn-success btn-block" href="/UserPanel/MyOrders/FinalyOrder/@Model.OrderId">تایید فاکتور</a>
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td colspan="6">
+                                              
+                                                    <p></p>
+                                                    <div class=" alert alert-danger">
+                                                        موجودی کیف پول شما کافی نمی باشد ، لطفا از طریق این
+                                                        <a  href="/UserPanel/Wallet">لینک</a>
+                                                        اقدام به شارژ کیف پول  نمایید
+                                                    </div>
+                                                </td>
+                                            }
+                                        }
+                                    </tr>
+                                </table>
+                                @{
+                                    string discountType = ViewBag.DiscountType;
+                                }
+                                @if (discountType != "")
+                                {
+                                    switch (discountType)
+                                    {
+                                        case "Success":
+                                        {
+                                            <div class="alert alert-success">
+                                                تخفیف با موفقیت اعمال گردید
+                                            </div>
+                                            break;
+                                        }
+
+                                        case "ExpireDate":
+                                        {
+                                            <div class="alert alert-danger">
+                                               کد تخفیف منقضی شده است
+                                            </div>
+                                            break;
+                                        }
+
+                                        case "NotFound":
+                                        {
+                                            <div class="alert alert-danger">
+                                              کد تخفیف معتبر نمی باشد
+                                            </div>
+                                            break;
+                                        }
+                                        case "Finished":
+                                        {
+                                            <div class="alert alert-warning">
+                                              کد تخفیف وارد شده به اتمام رسیده است
+                                            </div>
+                                            break;
+                                        }
+                                        case "Used":
+                                        {
+                                            <div class="alert alert-danger">
+                                               شما قبلا از این کد تخفیف استفاده کرده اید
+                                            </div>
+                                            break;
+                                        }
+
+                                    }
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+      
+    </div>
+</div>
+
+<script>
+    function ShowDiscount() {
+                                    document.getElementById("linkDiscount").style.visibility = "hidden";
+                                    document.getElementById("discount").removeAttribute("hidden");
+                                }
+</script>
+

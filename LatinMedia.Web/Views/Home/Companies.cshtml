@@ -1,0 +1,48 @@
+﻿@model IEnumerable<LatinMedia.Core.ViewModels.ShowAllCompaniesViewModel>
+@{
+    ViewData["Title"] = "Companies";
+}
+
+<div class="section-headline-wrap">
+    <div class="section-headline">
+        <h2> شرکت های تولیده کننده آموزش</h2>
+        <p>صفحه اصلی<span class="separator">/</span>انجمن<span class="separator">/</span><span class="current-section">مدالهای زمرد</span></p>
+    </div>
+</div>
+
+
+<div class="section-wrap">
+    <div class="section overflowable">
+     
+        <!-- /HEAD TITLE -->
+        <!-- BADGES SHOWCASE -->
+        <div class="badges-showcase column5-wrap">
+            <!-- BADGES SHOWCASE ITEM -->
+            @foreach (var item in Model)
+            {
+                <div class="badges-showcase-item column" style="padding-top: 20px">
+
+                  
+                    <img src="/images/company/@item.CompanyImageName" alt="">
+                 
+                   
+                    <a href="/Course?companyId=@item.CompanyId" class=" text-center">@item.CompanyTitle</a>
+                    <p class="badge-description">( @item.CourseCount &nbsp; اموزش)</p>
+
+                </div>
+
+
+
+
+                
+               
+            }
+
+            <!-- /BADGES SHOWCASE ITEM -->
+        </div>
+        <!-- /BADGES SHOWCASE -->
+
+        <div class="clearfix"></div>
+    </div>
+</div>
+

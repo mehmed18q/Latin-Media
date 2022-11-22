@@ -1,0 +1,99 @@
+﻿@page "{id}"
+@using LatinMedia.Core.Convertors
+@model LatinMedia.Web.Pages.Admin.Discounts.EditDiscountModel
+@{
+    ViewData["Title"] = "EditDiscount";
+}
+
+<form  method="post">
+    <div class="col-md-8 col-sm-8 col-xs-8">
+        <input type="hidden"  asp-for="Discount.DiscountId"/>
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>
+                    ویرایش کد تخفیف
+
+                </h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="row">
+              @if (ViewData["IsExistCode"] !=null)
+              {
+                  <div id="alertCode" class="alert alert-danger text-center" >
+                      کد تخفیف وارد شده از قبل وجود دارد
+                  </div>
+              }
+                    <div class="item form-group">
+                        <label class="control-label col-md-7  ">
+                            کد تخفیف
+                        </label>
+                        <div class="col-md-8">
+                            <input asp-for="Discount.DiscountCode" class="form-control " placeholder="کد تخفیف را وارد نمایید" type="text">
+
+                            <span asp-validation-for="Discount.DiscountCode" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="item form-group">
+                        <label class="control-label col-md-7  ">
+                            درصد کد تخفیف
+                        </label>
+                        <div class="col-md-8">
+                            <input asp-for="Discount.DiscountPercent" class="form-control  " placeholder=" درصد کد تخفیف را وارد نمایید" type="number">
+
+                            <span asp-validation-for="Discount.DiscountPercent" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="item form-group">
+                        <label class="control-label col-md-7  ">
+                            تعداد کد تخفیف
+                        </label>
+                        <div class="col-md-8">
+                            <input asp-for="Discount.UsableCount" class="form-control  " placeholder=" تعداد کد تخفیف را وارد نمایید" type="number">
+
+                            <span asp-validation-for="Discount.UsableCount" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="item form-group">
+                        <label class="control-label col-md-7  ">
+                            تاریخ شروع
+                        </label>
+                        <div class="col-md-8">
+                            <input type="text" value="@((Model.Discount.StartDate != null) ? Model.Discount.StartDate.Value.ToShamsiForEdit() : "")" name="stDate" id="stDate" class="form-control" placeholder="تاریخ شروع" data-ha-dp-disabletime="true" data-ha-datetimepicker="#stDate" data-ha-dp-issolar="true" data-ha-dp-resultinsolar="true"/>
+
+                        </div>
+                    </div>
+
+                    <div class="item form-group">
+                        <label class="control-label col-md-7  ">
+                            تاریخ پایان
+                        </label>
+                        <div class="col-md-8">
+                            <input type="text" value="@((Model.Discount.EndDate != null) ? Model.Discount.EndDate.Value.ToShamsiForEdit() : "")" name="endDate" id="endDate" class="form-control" placeholder="تاریخ پایان" data-ha-dp-disabletime="true" data-ha-datetimepicker="#endDate" data-ha-dp-issolar="true" data-ha-dp-resultinsolar="true"/>
+                        </div>
+                    </div>
+
+                    <hr class="col-md-12"/>
+                    <div class="item form-group">
+                        <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-5">
+
+                            <input type="submit" class="btn btn-success" value="ثبت"/>
+                            <a asp-page="Index" class="btn btn-warning">انصراف</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+

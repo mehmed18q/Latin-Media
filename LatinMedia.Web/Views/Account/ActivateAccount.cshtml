@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewData["Title"] = "فعال سازی حساب کاربری";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="section-headline-wrap">
+    <div class="section-headline">
+        <h2> فعال سازی حساب کاربری</h2>
+        <p><a href="/">صفحه اصلی</a><span class="separator">/</span><span class="current-section">فعال سازی حساب کاربری</span></p>
+    </div>
+</div>
+
+<br/>
+@if (ViewBag.IsActive)
+{
+    <div class="alert alert-success text-center">
+        <p>حساب کاربری شما با موفقیت فعال گردید</p>
+        <p>
+            <a href="/Login" >ورود به سایت </a>
+        </p>
+    </div>
+}
+else
+{
+    <div class="alert alert-danger text-center">
+        <p>حساب کاربری یافت نشد</p>
+    </div>
+}
+

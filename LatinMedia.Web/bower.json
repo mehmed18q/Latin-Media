@@ -1,0 +1,6 @@
+{
+  "name": "myproject",
+  "dependencies": {
+    "toast": "^2.2.0"
+  }
+}

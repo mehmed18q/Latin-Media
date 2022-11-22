@@ -1,0 +1,92 @@
+﻿@model LatinMedia.Core.ViewModels.ShowCourseListItemViewModel
+
+
+    <!-- /HEADLINE -->
+    <!-- PRODUCT LIST -->
+
+        <!-- PRODUCT ITEM -->
+        <div class="product-item column" style="height: 430px">
+            <!-- PRODUCT PREVIEW ACTIONS -->
+            <div class="product-preview-actions">
+                <!-- PRODUCT PREVIEW IMAGE -->
+                <figure class="product-preview-image">
+                  
+                        <img src="/course/images/@Model.CourseImage" alt="product-image">
+                 
+                </figure>
+                <!-- /PRODUCT PREVIEW IMAGE -->
+                <!-- PREVIEW ACTIONS -->
+                <div class="preview-actions">
+                    <!-- PREVIEW ACTION -->
+                    <div class="preview-action">
+                        <a href="item-v1.html">
+                            <div class="circle tiny primary">
+                                <span class="icon-tag"></span>
+                            </div>
+                        </a>
+                        <a href="/ShowCourse/@Model.CourseId">
+                            <p>نمایش</p>
+                        </a>
+                    </div>
+                    <!-- /PREVIEW ACTION -->
+                    <!-- PREVIEW ACTION -->
+                    <div class="preview-action">
+                        <a href="#">
+                            <div class="circle tiny secondary">
+                                <span class="icon-heart"></span>
+                            </div>
+                        </a>
+                        <a href="#">
+                            <p>علاقه مندی ها +</p>
+                        </a>
+                    </div>
+                    <!-- /PREVIEW ACTION -->
+                </div>
+                <!-- /PREVIEW ACTIONS -->
+            </div>
+            <!-- /PRODUCT PREVIEW ACTIONS -->
+            <!-- PRODUCT INFO -->
+            <div class="product-info" style="margin-top: 100px">
+              
+                <a href="item-v1.html">
+                    <a href="/ShowCourse/@Model.CourseId" class="text-header">@Model.CourseTitle</a>
+                    <br />
+                    <br />
+                </a>
+             
+                <a href="shop-gridview-v1.html">
+                    <p class="category primary">@Model.Company</p>
+                </a>
+                <p class="price"><span>تومان</span>@Model.CoursePrice.ToString("#,0")</p>
+            </div>
+            <!-- /PRODUCT INFO -->
+            <hr class="line-separator">
+            <!-- USER RATING -->
+            <div class="user-rating">
+                <a href="author-profile.html">
+                    <figure class="user-avatar small">
+                        <img src="/images/teachers/@Model.TeacherImage" alt="user-avatar">
+                    </figure>
+                </a>
+                <a href="author-profile.html">
+                    <p class="text-header tiny">@Model.Teacher</p>
+                </a>
+                @{
+                  
+                         TimeSpan spWorkMin = TimeSpan.FromMinutes(Model.CourseTime);
+                         string workHours = spWorkMin.ToString(@"hh\:mm");
+                    
+                }
+                <p class="rating tooltip">
+                      @workHours 
+                </p>
+            </div>
+            <!-- /USER RATING -->
+        </div>
+        <!-- /PRODUCT ITEM -->
+    
+        <!-- /PRODUCT ITEM -->
+
+    <!-- /PRODUCT LIST -->
+
+

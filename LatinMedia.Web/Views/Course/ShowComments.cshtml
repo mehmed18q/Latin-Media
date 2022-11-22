@@ -1,0 +1,45 @@
+﻿@using LatinMedia.Core.Convertors
+@model Tuple<List<LatinMedia.DataLayer.Entities.Course.CourseComment>,int>
+@{
+    Layout = null;
+}
+
+@foreach (var item in Model.Item1)
+{
+    <div class="comment-wrap">
+        <!-- USER AVATAR -->
+        <a href="user-profile.html">
+            <figure class="user-avatar medium">
+                <img src="/UserAvatar/@item.User.UserAvatar" alt="">
+            </figure>
+        </a>
+        <!-- /USER AVATAR -->
+        <div class="comment">
+            @*<span class="pin greyed">خریداری شده</span>*@
+
+            <!-- PIN -->
+            <p class="text-header">@(item.User.FirstName + " " + item.User.LastName)</p>									<!-- /PIN -->
+            <p class="timestamp">@item.CreateDate.ToShamsi()</p>
+
+            <p>@item.Comment</p>
+        </div>
+    </div>
+    <!-- /COMMENT -->
+    <!-- LINE SEPARATOR -->
+    <!-- LINE SEPARATOR -->
+    <hr class="line-separator">
+    <!-- /LINE SEPARATOR -->
+
+}
+
+<!-- PAGER -->
+<div class="pager primary">
+    @for (int i = 1; i <= Model.Item2; i++)
+    {
+        <div class="pager-item">
+            <p onclick="pageComment(@i)">@i</p></div>
+    }
+
+</div>
+<!-- /PAGER -->
+

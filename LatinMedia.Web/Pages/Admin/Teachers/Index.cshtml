@@ -1,0 +1,80 @@
+﻿@page
+@model LatinMedia.Web.Pages.Admin.Teachers.IndexModel
+@{
+    ViewData["Title"] = "لیست مدرسین";
+}
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>
+                لیست مدرسین
+
+            </h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li>
+                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+
+
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                @if (Model.Teachers.Count == 0)
+                {
+                    <div class="alert alert-danger ">
+                        رکوردی یافت نشد
+                    </div>
+                }
+
+                <div id="datatable-checkbox_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <a href="/Admin/Teachers/CreateTeacher/" class="btn btn-success">افزودن مدرس جدید</a>
+                            @{
+                                int rowCount = 1;
+                            }
+                            <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action dataTable no-footer" role="grid" aria-describedby="datatable-checkbox_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th>ردیف</th>
+                                        <th>عکس مدرس</th>
+                                        <th>نام مدرس </th>
+                                        <th> تعداد آموزش ها</th>
+                                        <th>عملیات</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    @foreach (var item in Model.Teachers)
+                                    {
+
+                                        <tr role="row" class="odd">
+                                            <td>@rowCount</td>
+                                            <td><img class="img-rounded" src="/images/teachers/@item.TeacherImageName" height="80" /></td>
+                                            <td>@(item.TeacherNameFa + " - " + item.TeacherNameEN)</td>
+                                            <td>@item.Courses.Count آموزش</td>
+                                            <td>
+                                                <a href="/Admin/Teachers/EditTeacher/@item.TeacherId" class="btn btn-warning btn-xs">ویرایش</a>
+                                                <a href="/Admin/Teachers/DeleteTeacher/@item.TeacherId" class="btn btn-danger btn-xs">حذف</a>
+                                            </td>
+                                        </tr>
+                                        rowCount++;
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

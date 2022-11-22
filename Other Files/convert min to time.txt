@@ -1,0 +1,4 @@
+ @{
+            TimeSpan spWorkMin = TimeSpan.FromMinutes(Model.CourseTime);
+            string workHours = spWorkMin.ToString(@"hh\:mm");
+        }

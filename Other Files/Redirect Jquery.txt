@@ -1,0 +1,5 @@
+<script>
+                        // Your delay in milliseconds
+                        var delay = 3000;
+                        setTimeout(function () { window.location = "https://localhost:44379/Admin/Users/"; }, delay);
+                    </script>

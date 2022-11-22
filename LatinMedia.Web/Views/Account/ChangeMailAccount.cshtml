@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewData["Title"] = "پایان تغییر ایمیل کاربری";
+}
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<div class="section-headline-wrap">
+    <div class="section-headline">
+        <h2> تغییر ایمیل کاربری</h2>
+        <p><a href="/">صفحه اصلی</a><span class="separator">/</span><span class="current-section">تغییر ایمیل کاربری</span></p>
+    </div>
+</div>
+
+<br />
+@if (ViewBag.IsSuccess == true)
+{
+    <script>
+        swal("ایمیل کاربری شما با موفقیت تغییر یافت", "جهت ورود به پنل کاربری با ایمیل جدید لاگین کنید", "success");
+
+    </script>
+
+    <div class="alert alert-success text-center">
+       
+        <p>
+            <a class="btn-danger" href="/Login">ورود به سایت </a>
+        </p>
+    </div>
+}
+else
+{
+    <div class="alert alert-danger text-center">
+        <p>حساب کاربری یافت نشد</p>
+    </div>
+}
+

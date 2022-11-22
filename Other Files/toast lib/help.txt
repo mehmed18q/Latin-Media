@@ -1,0 +1,2 @@
+ toastr.options.progressBar = true;
+            toastr.success("message");

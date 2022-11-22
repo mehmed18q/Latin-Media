@@ -1,0 +1,346 @@
+﻿@using LatinMedia.DataLayer.Entities.Company
+@using LatinMedia.DataLayer.Entities.Course
+@using LatinMedia.DataLayer.Entities.Teacher
+@model Tuple<List<LatinMedia.Core.ViewModels.ShowCourseListItemViewModel>,int>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="section-headline-wrap">
+    <div class="section-headline">
+        <h2>فروشگاه نسخه 1</h2>
+        <p>صفحه اصلی<span class="separator">/</span>فروشگاه v1<span class="separator">/</span><span class="current-section">	ایلاستراتور </span></p>
+    </div>
+</div>
+
+<div class="section-wrap">
+    <div class="section">
+
+    <form id="formFilter" action="/Course" method="get">
+    <input type="hidden" id="pageid" name="pageId" value="@ViewBag.PageId.ToString()" />
+    <!-- CONTENT -->
+    <div class="content">
+        <!-- HEADLINE -->
+        <div class="headline primary">
+            <h4>@Model.Item1.Count() محصول پیدا شد</h4>
+            <!-- VIEW SELECTORS -->
+            <input type="submit" value="اعمال فیلتر" class="btn btn-success "/>
+            <!-- /VIEW SELECTORS -->
+
+            <label for="price_filter" class="select-block">
+                @*<select name="price_filter" id="price_filter">
+                    <option value="0">قیمت (صعودی)</option>
+                    <option value="1">قیمت (نزولی)</option>
+                </select>*@
+                <!-- SVG ARROW -->
+                <svg class="svg-arrow">
+                    <use xlink:href="#svg-arrow"></use>
+                </svg>
+                <!-- /SVG ARROW -->
+            </label>
+            <label for="itemspp_filter" class="select-block">
+
+
+                <!-- SVG ARROW -->
+                <svg class="svg-arrow">
+                    <use xlink:href="#svg-arrow"></use>
+                </svg>
+                <!-- /SVG ARROW -->
+            </label>
+
+            <div class="clearfix"></div>
+        </div>
+        <!-- /HEADLINE -->
+        <!-- PRODUCT SHOWCASE -->
+
+
+
+        <div class="product-showcase">
+
+            <!-- PRODUCT LIST -->
+            <div class="product-list grid column3-4-wrap">
+                <!-- PRODUCT ITEM -->
+
+                @foreach (var item in Model.Item1)
+                {
+                    <partial name="_CourseBox" model="@item"/>
+
+
+                }
+
+                <!-- /PRODUCT ITEM -->
+                <!-- /PRODUCT LIST -->
+            </div>
+            <!-- /PRODUCT SHOWCASE -->
+
+            <!-- PAGER -->
+            <div class="pager primary">
+                @for (int i = 1; i <= Model.Item2; i++)
+                {
+                    <div class="pager-item">
+                        <p>
+                            <a onclick="changePage(@i)" href="#">@i</a>
+                        </p>
+                    </div>
+                }
+
+
+
+            </div>
+
+            <!-- /PAGER -->
+
+        </div>
+
+    </div>
+    <!-- CONTENT -->
+    <!-- SIDEBAR -->
+    @{
+        List<CourseType> types = ViewBag.CourseTypes as List<CourseType>;
+    }
+    <div class="sidebar">
+
+        <div class="sidebar-item range-feature">
+
+
+
+
+            <section class="aside-section filter-by-price">
+                <header>
+                    <h3> فیلتر بر اساس قیمت </h3></header>
+
+                <div class="price-range">
+                    <input type="hidden" value="" id="min-value" name="minPrice">
+                    <input type="hidden" value="" id="max-value" name="maxPrice">
+
+                    <div class="price-bar">
+                        <div id="priceFilter" class="noUi-target noUi-rtl noUi-horizontal">
+
+                        </div>
+                    </div>
+                    <div class="max-price">تا <span id="max-text">100000</span> تومان</div>
+                    <div class="min-price">از <span id="min-text">2000</span> تومان</div>
+                    <div class="clearfix"></div>
+                </div>
+            </section>
+
+        </div>
+
+        @{
+            int selectedType = ViewBag.SelectedType;
+        }
+        <!-- DROPDOWN -->
+        <ul class="dropdown hover-effect  ">
+
+            @foreach (var type in types)
+            {
+                <li class="dropdown-item @((selectedType == type.TypeId) ? "active" : "") ">
+                    <a href="/Course?type=@type.TypeId">@type.TypeTitle</a>
+                </li>
+            }
+
+
+        </ul>
+        <!-- /DROPDOWN -->
+        <!-- SIDEBAR ITEM -->
+
+        @{
+            List<CourseGroup> groups = ViewBag.Groups as List<CourseGroup>;
+            List<int> selectedGroups = ViewBag.SelectedGroups as List<int>;
+        }
+        <div class="sidebar-item">
+            <h4>فیلتر محصولات</h4>
+            <hr class="line-separator">
+            <ul>
+                @foreach (var group in groups.Where(g => g.ParentId == null))
+                {
+                    <li>
+                        <input onchange="changeGroup()" @((selectedGroups.Any(s => s == group.GroupId) ? "checked" : "")) type="checkbox" id="filter@(group.GroupId)" value="@group.GroupId" name="selectedGroups"/>
+                        <label for="filter@(group.GroupId)">
+                            <span class="checkbox primary primary"><span></span></span>
+                            @group.GroupTitle
+                            @*<span class="quantity">350</span>*@
+                        </label>
+
+                        @if (groups.Any(g => g.ParentId == group.GroupId))
+                        {
+                            <ul>
+                                @foreach (var sub in groups.Where(g => g.ParentId == group.GroupId))
+                                {
+                                    <li style="margin-right: 20px">
+                                        <input onchange="changeGroup()" @((selectedGroups.Any(s => s == sub.GroupId) ? "checked" : "")) type="checkbox" id="filter@(sub.GroupId)" value="@sub.GroupId" name="selectedGroups">
+                                        <label for="filter@(sub.GroupId)">
+                                            <span class="checkbox primary primary"><span></span></span>
+                                            @sub.GroupTitle
+                                            @*<span class="quantity">350</span>*@
+                                        </label>
+
+                                        @if (groups.Any(g => g.ParentId == sub.GroupId))
+                                        {
+                                            <ul>
+                                                @foreach (var secondSub in groups.Where(g => g.ParentId == sub.GroupId))
+                                                {
+                                                    <li style="margin-right: 30px">
+                                                        <input onchange="changeGroup()" @((selectedGroups.Any(s => s == secondSub.GroupId) ? "checked" : "")) type="checkbox" id="filter@(secondSub.GroupId)" value="@secondSub.GroupId" name="selectedGroups">
+                                                        <label for="filter@(secondSub.GroupId)">
+                                                            <span class="checkbox primary primary"><span></span></span>
+                                                            @secondSub.GroupTitle
+                                                            @*<span class="quantity">350</span>*@
+                                                        </label>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        }
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </li>
+                }
+            </ul>
+
+
+
+
+
+        </div>
+        <!-- /SIDEBAR ITEM -->
+        <!-- SIDEBAR ITEM -->
+        @{
+            List<Company> listCompany = ViewBag.Companies as List<Company>;
+            int selectedCompany = ViewBag.SelectedCompany;
+        }
+        <div class="sidebar-item">
+            <h4>شرکت های تولیید کننده</h4>
+            <hr class="line-separator">
+            <ul class="dropdown hover-effect active">
+                @foreach (var item in listCompany)
+                {
+                    <li class="dropdown-item @((selectedCompany == item.CompanyId) ? "active" : "")">
+
+                        <a href="/Course?companyId=@item.CompanyId">@item.CompanyTitle</a>
+                    </li>
+                }
+
+
+            </ul>
+
+
+
+        </div>
+
+        @{
+            List<Teacher> listTeachers = ViewBag.Teachers as List<Teacher>;
+            int selectedTeacher = ViewBag.SelectedTeacher;
+        }
+
+        <div class="sidebar-item">
+            <h4>مدرسین</h4>
+            <hr class="line-separator">
+            <ul class="dropdown hover-effect">
+                @foreach (var item in listTeachers)
+                {
+                    <li class="dropdown-item @((selectedTeacher == item.TeacherId) ? "active" : "")">
+
+                        <a href="/Course?teacherId=@item.TeacherId">@(item.TeacherNameFa + " - " + item.TeacherNameEN)</a>
+                    </li>
+                }
+
+
+            </ul>
+
+
+
+
+
+        </div>
+        <!-- /SIDEBAR -->
+    </div>
+    </form>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="/js/nouislider.min.js"></script>
+
+
+
+    <script type="text/javascript">
+
+
+
+        $(function () {
+
+            var slider = document.getElementById('priceFilter');
+            noUiSlider.create(slider, {
+                start: [2000, 100000],
+                step: 500,
+                connect: true,
+                direction: 'rtl',
+                range: {
+                    'min': 2000,
+                    'max': 100000
+                }
+            });
+
+            var marginMin = document.getElementById('min-text'),
+                marginMax = document.getElementById('max-text');
+
+            slider.noUiSlider.on('update', function (values, handle) {
+                var xvalue = Math.round(values[handle]);
+                if (handle) {
+                    marginMax.innerHTML = xvalue;
+                } else {
+                    marginMin.innerHTML = xvalue;
+                }
+                //console.log(values[handle]);
+            });
+
+            slider.noUiSlider.on('change', function (values, handle) {
+                var xvalue = Math.round(values[handle]);
+                if (handle) {
+                    // setGetParameter('max_price', xvalue);
+                    $('#max-value').val(xvalue);
+                } else {
+                    // setGetParameter('min_price', xvalue);
+                    $('#min-value').val(xvalue);
+                }
+            });
+
+
+            slider.noUiSlider.on('slide', function (values, handle) {
+
+                console.log(values[0]);
+                console.log(values[1]);
+
+                var xvalue = Math.round(values[handle]);
+                //updateSliderRange( Math.round(values[0]), Math.round(values[1]) );
+            });
+
+
+            function updateSliderRange(min, max) {
+                slider.noUiSlider.updateOptions({
+                    range: {
+                        'min': min,
+                        'max': max
+                    }
+                });
+            }
+
+
+           
+        });
+
+        function changeGroup() {
+            $("#formFilter").submit();
+        }
+
+        function  changePage(pageid) {
+            $("#pageid").val(pageid);
+            $("#formFilter").submit();
+        }
+
+    </script>
+}
+

@@ -1,0 +1,11 @@
+// website : https://www.nuget.org/packages/MD.PersianDateTime.Core/
+
+// nuget : Install-Package MD.PersianDateTime.Core -Version 2.3.5
+
+// code : 
+
+	public static string ConvertMiladiToShamsi(this DateTime date,string Format)
+        {
+            PersianDateTime persianDateTime = new PersianDateTime(date);
+            return persianDateTime.ToString(Format);
+        }

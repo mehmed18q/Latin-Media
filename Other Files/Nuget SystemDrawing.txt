@@ -1,0 +1,1 @@
+Install-Package CoreCompat.System.Drawing.v2 -Version 5.2.0-preview1-r131	

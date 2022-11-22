@@ -1,0 +1,60 @@
+﻿@model IEnumerable<LatinMedia.Core.ViewModels.ShowAllTeachersViewModel>
+@{
+    ViewData["Title"] = "Teachers";
+}
+
+<div class="section-headline-wrap">
+    <div class="section-headline">
+        <h2>مدرسان</h2>
+        <p>صفحه اصلی<span class="separator">/</span>فروشگاه V2<span class="separator">/</span><span class="current-section">	ایلاستراتور </span></p>
+    </div>
+</div>
+
+<div class="section-wrap">
+    <div class="section">
+        <!-- PRODUCT SHOWCASE -->
+        <div class="product-showcase">
+            <!-- PRODUCT LIST -->
+            <div class="product-list list full">
+                <!-- PRODUCT ITEM -->
+                @foreach (var item in Model)
+                {
+                    <div class="product-item">
+                        <a href="">
+                            <!-- PRODUCT PREVIEW IMAGE -->
+                            <figure class="product-preview-image small">
+                                <img src="/images/teachers/@item.TeacherImageName" alt="product-image">
+                            </figure>
+                            <!-- /PRODUCT PREVIEW IMAGE -->
+                        </a>
+
+                        <!-- PRODUCT INFO -->
+                        <div class="product-info">
+                            <a href="/Course?teacherId=@item.TeacherId">
+                                <p class="text-header">@(item.TeacherNameFa + " - " + item.TeacherNameEN)</p>
+                            </a>
+                            <p class="product-description"> </p>
+                            <a href="shop-gridview-v1.html">
+                                <p class="category primary">@item.CourseCount آموزش</p>
+                            </a>
+                        </div>
+                        <!-- /PRODUCT INFO -->
+                    
+                    </div>
+                }
+                <!-- /PRODUCT ITEM -->
+                <!-- PRODUCT ITEM -->
+
+            </div>
+                <!-- /PRODUCT ITEM -->
+            </div>
+            <!-- /PRODUCT LIST -->
+        </div>
+        <!-- /PRODUCT SHOWCASE -->
+
+        <div class="clearfix"></div>
+
+
+    </div>
+
+

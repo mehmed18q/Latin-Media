@@ -1,0 +1,362 @@
+﻿@using LatinMedia.Core.Convertors
+@using LatinMedia.Core.Security
+@using LatinMedia.Core.Services.Interfaces
+@model LatinMedia.DataLayer.Entities.Course.Course
+@inject IOrderService OrderService
+@inject ICourseService CourseService
+@{
+    
+        ViewData["Title"] = Model.CourseFaTitle;
+   
+    bool isUserInCourse = false;
+    if (User.Identity.IsAuthenticated)
+    {
+        isUserInCourse = OrderService.IsUserInCourse(User.Identity.GetEmail(), Model.CourseId);
+    }
+
+}
+
+
+<div class="section-headline-wrap">
+    <div class="section-headline">
+        <h2>@(Model.CourseLatinTitle + " - " + Model.CourseFaTitle)</h2>
+
+    </div>
+</div>
+
+
+<div class="section-wrap">
+    <div class="section">
+        <!-- SIDEBAR -->
+        <div class="sidebar right">
+            <!-- SIDEBAR ITEM -->
+            <div class="sidebar-item">
+                <br />
+                @if (!isUserInCourse)
+                {
+                    <a href="/Course/BuyCourse/@Model.CourseId" class="button big dark purchase">
+                        <span class=""> @Model.CoursePrice.ToString("#,0")</span>
+                        <span class="primary">خریداری دوره&nbsp; &nbsp;</span>
+                    </a>
+                }
+                else
+                {
+                    <span class="alert alert-danger bold" style="font-family: B Nazanin;font-weight: bold">
+                        شما قبلا دوره را خریداری کرده اید
+                    </span>
+                }
+
+
+                <hr class="line-separator">
+
+
+                <div class="clearfix"></div>
+            </div>
+            <!-- /SIDEBAR ITEM -->
+            <!-- SIDEBAR ITEM -->
+            <div class="sidebar-item author-bio">
+                <h4>مدرس دوره</h4>
+                <hr class="line-separator">
+                <!-- USER AVATAR -->
+                <a href="user-profile.html" class="user-avatar-wrap medium">
+                    <figure class="user-avatar medium">
+                        <img src="/images/teachers/@Model.Teacher.TeacherImageName" alt="">
+                    </figure>
+                </a>
+                <!-- /USER AVATAR -->
+                <p class="text-header">@(Model.Teacher.TeacherNameFa + " - " + Model.Teacher.TeacherNameEN)</p>
+                <p class="text-oneline"> @Model.Company.CompanyTitle توسعه دهنده شرکت <br></p>
+
+
+                <a href="/Course?teacherId=@Model.Teacher.TeacherId" class="button mid dark spaced">دوره های این مدرس</a>
+
+            </div>
+
+
+            <div class="sidebar-item author-bio">
+                <h4>شرکت تولیده کننده</h4>
+                <hr class="line-separator">
+                <!-- USER AVATAR -->
+                <a href="user-profile.html" class="user-avatar-wrap medium">
+
+                    <img src="/images/company/@Model.Company.CompanyImageName" class="center" height="60" alt="">
+
+                </a>
+                <!-- /USER AVATAR -->
+                <p class="text-header"> @(Model.Company.CompanyTitle) شرکت</p>
+
+
+
+                <a href="/Course?companyId=@Model.Company.CompanyId" class="button mid dark spaced">دوره های این شرکت</a>
+
+            </div>
+            <!-- /SIDEBAR ITEM -->
+            <!-- SIDEBAR ITEM -->
+            <div class="sidebar-item product-info">
+                <h4>اطلاعات محصول</h4>
+                <hr class="line-separator">
+                <!-- INFORMATION LAYOUT -->
+                <div class="information-layout">
+                    <!-- INFORMATION LAYOUT ITEM -->
+                    <div class="information-layout-item">
+                        <p class="text-header">حجم اموزش</p>
+                        <p> مگابایت @Model.Volume  </p>
+                    </div>
+                    <!-- /INFORMATION LAYOUT ITEM -->
+                    <!-- INFORMATION LAYOUT ITEM -->
+                    <div class="information-layout-item">
+                        <p class="text-header">تاریخ انتشار</p>
+                        <p>@Model.CreateDate.ConvertMiladiToShamsi("dddd dd MMMM yyyy")</p>
+                    </div>
+                    <!-- /INFORMATION LAYOUT ITEM -->
+                    <!-- INFORMATION LAYOUT ITEM -->
+                    <div class="information-layout-item">
+                        <p class="text-header">مدت زمان آموزش</p>
+                        <p> @Model.CourseTime</p>
+                    </div>
+                    <!-- /INFORMATION LAYOUT ITEM -->
+                    <!-- INFORMATION LAYOUT ITEM -->
+                    <div class="information-layout-item">
+                        <p class="text-header">زبان اموزش</p>
+                        <p>@Model.Language</p>
+                    </div>
+                    <!-- /INFORMATION LAYOUT ITEM -->
+                    <!-- INFORMATION LAYOUT ITEM -->
+                    <div class="information-layout-item">
+                        <p class="text-header">زیر نویس</p>
+                        @if (Model.IsSubTitle)
+                        {
+                            <p>دارد</p>
+                        }
+                        else
+                        {
+                            <p>ندارد</p>
+                        }
+                    </div>
+
+                    <div class="information-layout-item">
+                        <p class="text-header">تعداد خرید این دوره</p>
+                        <p>@Model.UserCourses.Count</p>
+                    </div>
+
+                    <!-- /INFORMATION LAYOUT ITEM -->
+                   
+                </div>
+                <!-- INFORMATION LAYOUT -->
+            </div>
+
+
+            <div class="sidebar-item">
+                <h4>برچسبها</h4>
+                <hr class="line-separator">
+                <!-- TAG LIST -->
+                <div class="tag-list primary">
+                    @foreach (string tags in Model.Tags.Split('-', StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        <a href="/Course?filter=@tags" class="tag-list-item">@tags</a>
+                    }
+
+                </div>
+                <!-- /TAG LIST -->
+            </div>
+
+            <div class="sidebar-item">
+                <h4>مسیر اموزشی</h4>
+                <hr class="line-separator">
+                <!-- TAG LIST -->
+                <div class="tag-list primary">
+
+                    @if (Model.GroupId != null)
+                    {
+                        <a href="/Course?selectedGroups=@Model.GroupId" class="tag-list-item">@Model.CourseGroup.GroupTitle</a>
+                    }
+
+                    @if (Model.SubGroupId != null)
+                    {
+                        <a href="/Course?selectedGroups=@Model.SubGroupId" class="tag-list-item">@Model.SubGroup.GroupTitle</a>
+                    }
+
+                    @if (Model.SecondSubGroupId != null)
+                    {
+                        <a href="/Course?selectedGroups=@Model.SecondSubGroupId" class="tag-list-item">@Model.SecondSubGroup.GroupTitle</a>
+                    }
+
+
+                </div>
+                <!-- /TAG LIST -->
+            </div>
+            <!-- /SIDEBAR ITEM -->
+ 
+        
+        </div>
+        <!-- /SIDEBAR -->
+        <!-- CONTENT -->
+    <div class="content left">
+    
+   
+    <!-- POST -->
+    <article class="post">
+        <!-- POST IMAGE -->
+        <div class="post-image">
+            <figure class="product-preview-image large ">
+                <img height="600px" src="/course/images/@Model.CourseImageName" alt="">
+            </figure>
+
+                   
+        </div>
+        <!-- /POST IMAGE -->
+
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+       
+
+        <hr class="line-separator">
+
+        <!-- POST CONTENT -->
+        <div class="post-content">
+            <!-- POST PARAGRAPH -->
+            <div class="post-paragraph">
+                <h3 class="post-title ">توضیحات دوره اموزشی @Model.CourseFaTitle</h3>
+
+                <span>
+                    @Html.Raw(Model.CourseDescription)
+                </span>
+            </div>
+
+            <div class="post-paragraph">
+                @if (Model.DemoFileName != null)
+                {
+                    <h3 class="post-title ">دمو آموزش</h3>
+                    <hr class="line-separator">
+                    <br/>
+                    <video poster="/course/images/@Model.CourseImageName" src="@Model.DemoFileName" style="height: 400px" controls preload="true"></video>
+                }
+            </div>
+
+            <!-- /POST PARAGRAPH -->
+
+            <div class="clearfix"></div>
+        </div>
+        <!-- /POST CONTENT -->
+
+        <hr class="line-separator">
+
+        <!-- SHARE -->
+        <div class="share-links-wrap">
+            <p class="text-header small">به اشتراک بگذارید</p>
+            <!-- SHARE LINKS -->
+            <ul class="share-links hoverable">
+                <li><a href="#" class="fb"></a></li>
+                <li><a href="#" class="twt"></a></li>
+                <li><a href="#" class="db"></a></li>
+                <li><a href="#" class="rss"></a></li>
+                <li><a href="#" class="gplus"></a></li>
+            </ul>
+            <!-- /SHARE LINKS -->
+        </div>
+        <!-- /SHARE -->
+    </article>
+    <!-- /POST -->
+    <!-- POST TAB -->
+    <div class="post-tab xmtab" style="display: block;">
+        <!-- TAB HEADER -->
+        <div class="tab-header primary">
+            <!-- TAB ITEM -->
+            <div class="tab-item selected">
+                <p class="text-header">(نظرات (@Model.CourseComments.Count(c => c.IsReadAdmin == false))
+                </p>
+            </div>
+            <!-- /TAB ITEM -->
+
+
+        </div>
+        <!-- /TAB HEADER -->
+        <!-- TAB CONTENT -->
+        <div class="tab-content void open">
+            <!-- COMMENTS -->
+
+
+
+            <div class="comment-list">
+                <!-- COMMENT -->
+                <!-- COMMENT REPLY FORM -->
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <h3>پیام بگذارید</h3>
+                    <form asp-action="CreateComment" asp-controller="Course" class="comment-reply-form"
+                          data-ajax="true"
+                          data-ajax-mode="replace"
+                          data-ajax-update="#listComment"
+                          data-ajax-success="Success">
+                        <input type="hidden" name="comment.CourseId" value="@Model.CourseId"/>
+                        <textarea name="comment.Comment" id="comment_Comment" placeholder="متن دیدگاه خود را اینجا بنویسید"></textarea>
+
+                        <button class="button primary">ارسال نظر</button>
+                    </form>
+                }
+                else
+                {
+                    <div class="alert alert-danger text-center">
+                        <span style="font-family: 'B Yekan'">
+                            برای ارسال نظر باید وارد
+                            <a href="/Login">حساب کاربری</a>
+                            خود شوید
+                        </span>
+                    </div>
+                }
+
+                <hr class="line-separator">
+                <!-- /COMMENT REPLY FORM -->
+
+                <div id="listComment">
+                    <!--Load Comments by Paging-->
+                </div>
+
+
+                <div class="clearfix"></div>
+
+
+
+
+
+            </div>
+            <!-- /COMMENT REPLY -->
+        </div>
+        <!-- /COMMENTS -->
+    </div>
+    <!-- /TAB CONTENT -->
+
+    </div>
+        <!-- /POST TAB -->
+    </div>
+    <!-- CONTENT -->
+</div>
+
+
+@section Scripts
+    {
+
+    <script src="/js/jquery.unobtrusive-ajax.min.js"></script>
+    
+    <script>
+        function Success() {
+            $("#comment_Comment").val("");
+
+            toastr.options.progressBar = true;
+            toastr.success("نظر شما با موفقیت ثبت گردید");
+        }
+
+        $("#listComment").load("/Course/ShowComments/" + @Model.CourseId);
+
+        function pageComment(pageId) {
+            $("#listComment").load("/Course/ShowComments/" + @Model.CourseId + "?pageId=" + pageId);
+        }
+    </script>
+}
+

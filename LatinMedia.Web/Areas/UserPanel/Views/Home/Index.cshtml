@@ -1,0 +1,45 @@
+﻿@using LatinMedia.Core.Convertors
+@model LatinMedia.Core.ViewModels.InformationUserViewModel
+@{
+    ViewData["Title"] = "پنل کاربری " + User.Identity.Name;
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header card-header-primary">
+                        <h4 class="card-title">اطلاعات کاربری</h4>
+                        <p class="card-category"></p>
+                    </div>
+                    <div class="card-body">
+                        <p>   نام : @(Model.FirstName + " " + Model.LastName)</p>
+                        <p>   ایمیل : @Model.Email</p>
+                        <p>   شماره موبایل : @Model.Mobile</p>
+                        <p>   تاریخ عضویت : @Model.RegisterDate.ToShamsi()</p>
+                        <p>کیف پول : @Model.Wallet.ToString("#,0 تومان")  </p>
+                        <hr/>
+                        <a href="/UserPanel/EditProfile" class="btn btn-warning btn-round text-white">ویرایش حساب کاربری</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-profile">
+                    <div class="card-avatar">
+                        <a href="#pablo">
+                            <img class="img" src="/UserAvatar/@Model.UserAvatar">
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h6 class="card-category text-gray">@(Model.FirstName + " " + Model.LastName)</h6>
+                        <h4 class="card-title">@Model.Email</h4>
+                       
+                        <a href="/Logout" class="btn btn-danger btn-round">خروج</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

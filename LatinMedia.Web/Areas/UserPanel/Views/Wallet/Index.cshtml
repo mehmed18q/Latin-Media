@@ -1,0 +1,88 @@
+﻿@using LatinMedia.Core.Convertors
+@using LatinMedia.Core.ViewModels
+@model LatinMedia.Core.ViewModels.ChargeWalletViewModel
+@{
+    ViewData["Title"] = "کیف پول شما";
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <form asp-action="Index" method="post">
+
+            <div class="row">
+
+                <div class="col-md-9">
+                    <div class="card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title">شارژ کیف پول</h4>
+                            <p class="card-category"></p>
+                        </div>
+                        <div class="card-body">
+                           
+                            <div class="row">
+
+                                <div class="col-md-5">
+                                    <div class="form-group bmd-form-group">
+                                        <label asp-for="Amount" class="bmd-label-floating"></label>
+                                        <input asp-for="Amount" type="number" placeholder="مبلغ به تومان" class="form-control">
+                                    </div>
+                                    <span asp-validation-for="Amount" class="text-danger"></span>
+                                </div>
+                            </div>
+               
+
+                            <br />
+
+                            <button type="submit" class="btn btn-info btn-round  pull-right">شارژ کیف پول</button>
+
+                            <div class="clearfix"></div>
+                            <hr />
+
+                            <p class="alert alert-success text-center rounded">
+                                لیست تراکنش های شما
+                            </p>
+                            <div class="row">
+                                @{
+                                    List<WalletInfoViewModel> list = ViewBag.WalletList as List<WalletInfoViewModel>;
+                                    int RowCount = 1;
+                                }
+                                <table  class="table table-bordered table-hover table-striped ">
+                                    <tr class="table-info">
+                                        <th>ردیف</th>
+                                        <th>مبلغ</th>
+                                        <th>نوع تراکنش</th>
+                                        <th>تاریخ</th>
+                                        <th>توضیحات</th>
+                                    </tr>
+                                    @foreach (var item in list)
+                                    {
+                                        <tr >
+                                            <td>@RowCount</td>
+                                            <td>@item.Amount.ToString("#,0 تومان")</td>
+                                            <td>
+                                                @if (item.Type == 1)
+                                                {
+                                                    <p class="text-success">واریز</p>
+                                                }
+                                                else
+                                                {
+                                                    <p class="text-danger">برداشت</p>
+                                                }
+                                            </td>
+                                            <td>@item.DateTime.ToShamsi()</td>
+                                            <td>@item.Description</td>
+                                        </tr>
+                                        RowCount++;
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </form>
+    </div>
+</div>
+

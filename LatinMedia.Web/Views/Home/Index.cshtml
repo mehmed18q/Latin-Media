@@ -1,0 +1,154 @@
+﻿@using System.Runtime.InteropServices.ComTypes
+@using LatinMedia.Core.Services.Interfaces
+@using LatinMedia.Core.ViewModels
+@using LatinMedia.DataLayer.Entities.Course
+@model IEnumerable<LatinMedia.Core.ViewModels.ShowCourseListItemViewModel>
+@inject ICourseService CourseService
+@{
+    ViewData["Title"] = "صفحه اصلی";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+   
+}
+
+<div class="banner-wrap">
+    <section class="banner">
+        <h5>
+            دانشجویار: ورود به بازار کارحرفه ای
+        </h5>
+
+        <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ. و با استفاده از طراحان گرافیک است.</p>
+       
+        <!-- SEARCH WIDGET -->
+        <div class="search-widget">
+            <form  action="Course" method="get"  class="search-widget-form">
+                <input type="text" name="filter" placeholder="جستجوی محصولات و یا خدمات">
+                <label for="categories" class="select-block">
+                    @*<select asp-items="groups" name="" id="categories">
+                         بعد تکمیل مکنم  
+                       
+                    </select>*@
+                    <!-- SVG ARROW -->
+                    <svg class="svg-arrow">
+                        <use xlink:href="#svg-arrow"></use>
+                    </svg>
+                    <!-- /SVG ARROW -->
+                </label>
+                <button class="button medium dark">جستجو</button>
+            </form>
+        </div>
+        <!-- /SEARCH WIDGET -->
+    </section>
+</div>
+
+<div id="product-sideshow-wrap">
+    <div id="product-sideshow">
+        <!-- PRODUCT SHOWCASE / جدیدترین محصولات -->
+        <div class="product-showcase">
+            <!-- HEADLINE -->
+            <div class="headline primary">
+                <h4>جدیدترین محصولات</h4>
+                <!-- SLIDE CONTROLS -->
+                <div class="slide-control-wrap">
+                    <div class="slide-control left">
+                        <!-- SVG ARROW -->
+                        <svg class="svg-arrow">
+                            <use xlink:href="#svg-arrow"></use>
+                        </svg>
+                        <!-- /SVG ARROW -->
+                    </div>
+                    <div class="slide-control right">
+                        <!-- SVG ARROW -->
+                        <svg class="svg-arrow">
+                            <use xlink:href="#svg-arrow"></use>
+                        </svg>
+                        <!-- /SVG ARROW -->
+                    </div>
+                </div>
+                <!-- /SLIDE CONTROLS -->
+            </div>
+            <div id="pl-1" class="product-list grid column4-wrap owl-carousel">
+                @foreach (var item in Model)
+                {
+                    <partial name="_CourseBox" model="item" />
+                }
+            </div>
+        </div>
+        <!-- /PRODUCT SHOWCASE -->
+        <!-- PRODUCT SHOWCASE -->
+        <div class="product-showcase">
+            <!-- HEADLINE -->
+            <div class="headline secondary">
+                <h4>محصولات ویژه</h4>
+                <!-- SLIDE CONTROLS -->
+                <div class="slide-control-wrap">
+                    <div class="slide-control left">
+                        <!-- SVG ARROW -->
+                        <svg class="svg-arrow">
+                            <use xlink:href="#svg-arrow"></use>
+                        </svg>
+                        <!-- /SVG ARROW -->
+                    </div>
+                    <div class="slide-control right">
+                        <!-- SVG ARROW -->
+                        <svg class="svg-arrow">
+                            <use xlink:href="#svg-arrow"></use>
+                        </svg>
+                        <!-- /SVG ARROW -->
+                    </div>
+                </div>
+                <!-- /SLIDE CONTROLS -->
+            </div>
+            <!-- /HEADLINE -->
+            <!-- PRODUCT LIST -->
+            <div id="pl-4" class="product-list grid column4-wrap owl-carousel">
+
+                @foreach (var special in CourseService.GetSpecialCourses())
+                {
+                    <partial name="_CourseBox" model="special" />
+                }
+
+
+            </div>
+            <!-- /PRODUCT LIST -->
+        </div>
+        <!-- /PRODUCT SHOWCASE -->
+        <!-- PRODUCT SHOWCASE -->
+        <div class="product-showcase">
+            <!-- HEADLINE -->
+            <div class="headline">
+                <h4>پرفروش ترین محصولات</h4>
+                <!-- SLIDE CONTROLS -->
+                <div class="slide-control-wrap">
+                    <div class="slide-control left">
+                        <!-- SVG ARROW -->
+                        <svg class="svg-arrow">
+                            <use xlink:href="#svg-arrow"></use>
+                        </svg>
+                        <!-- /SVG ARROW -->
+                    </div>
+                    <div class="slide-control right">
+                        <!-- SVG ARROW -->
+                        <svg class="svg-arrow">
+                            <use xlink:href="#svg-arrow"></use>
+                        </svg>
+                        <!-- /SVG ARROW -->
+                    </div>
+                </div>
+                <!-- /SLIDE CONTROLS -->
+            </div>
+            <!-- /HEADLINE -->
+            <!-- PRODUCT LIST -->
+            @{
+                List<ShowCourseListItemViewModel> popularCourse = ViewBag.PopularCourses as List<ShowCourseListItemViewModel>;
+            }
+            <div id="pl-5" class="product-list grid column4-wrap owl-carousel">
+                @foreach (var popular in popularCourse)
+                {
+                    <partial name="_CourseBox" model="popular" />
+                }
+            </div>
+            <!-- PRODUCT LIST -->
+        </div>
+        <!-- PRODUCT SHOWCASE -->
+    </div>
+</div>

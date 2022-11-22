@@ -1,0 +1,6 @@
+Microsoft.EntityFrameworkCore
+Microsoft.EntityFrameworkCore.Tools
+Microsoft.EntityFrameworkCore.SqlServer
+
+//------------------------------------------------------
+"Data Source=BEHNAM-PC;Initial Catalog=DBName;Integrated Security=True;MultipleActiveResultSets=True;"
